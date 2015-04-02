@@ -133,6 +133,11 @@ defimpl Poison.Encoder, for: BitString do
 end
 
 defimpl Poison.Encoder, for: Integer do
+  # Handle int64 for JavaScript by converting to string.
+  def encode(integer, _options) when integer > 9007199254740992 do
+    ~w("#{integer}")
+  end
+
   def encode(integer, _options) do
     Integer.to_string(integer)
   end
